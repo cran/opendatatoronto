@@ -1,0 +1,52 @@
+---
+title: "Working with spatial data from the portal"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Working with spatial data from the portal}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  message = FALSE
+)
+```
+
+There is a ton of spatial data on the [City of Toronto Open Data Portal](https://open.toronto.ca). Spatial resources are retrieved the same way as all other resources, by using `get_resource()`, and may require the `sf` and `geojsonsf` packages.
+
+We can look at [bicycle parking](https://open.toronto.ca/dataset/bicycle-parking-racks/) in Toronto. The result is an `sf` object with WGS84 projection.
+
+```{r setup}
+library(opendatatoronto)
+library(dplyr)
+
+bike_parking_racks <- search_packages("Bicycle Parking Racks") %>%
+  list_package_resources() %>%
+  filter(name == "Bicycle Parking Racks Data") %>%
+  get_resource()
+
+bike_parking_racks
+```
+
+If we want to plot this data on a map of Toronto, data to map the different [neighbourhoods of Toronto](https://open.toronto.ca/dataset/neighbourhoods/) is also available from the portal!
+
+```{r}
+neighbourhoods <- list_package_resources("https://open.toronto.ca/dataset/neighbourhoods/") %>%
+  get_resource()
+
+neighbourhoods[c("AREA_NAME", "geometry")]
+```
+
+Then, we can plot the bike racks along with a map of Toronto:
+
+```{r fig.width = 7}
+library(ggplot2)
+
+ggplot() +
+  geom_sf(data = neighbourhoods[["geometry"]]) +
+  geom_sf(data = bike_parking_racks) +
+  theme_minimal()
+```
