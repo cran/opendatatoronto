@@ -7,9 +7,11 @@ knitr::opts_chunk$set(
 
 ## ----setup---------------------------------------------------------------
 library(opendatatoronto)
+library(dplyr)
 
 summary_diseases <- search_packages("Annual Summary of Reportable Communicable Diseases") %>%
   list_package_resources() %>%
+  filter(name == "summary-of-reportable-communicable-diseases-in-toronto-2007-2017") %>%
   get_resource()
 
 str(summary_diseases, max.level = 1)
