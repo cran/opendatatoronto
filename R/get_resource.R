@@ -33,7 +33,7 @@ get_resource <- function(resource) {
 
   if (resource_res[["datastore_active"]]) {
     res <- get_datastore_resource(resource_id)
-    res <- check_geometry_resource(res, resource_id)
+    res <- check_geometry_resource(res, format)
   } else {
     res <- ckanr::ckan_fetch(
       x = resource_res[["url"]],
@@ -43,7 +43,9 @@ get_resource <- function(resource) {
   }
 
   if (inherits(res, "sf")) {
-    res
+    res_crs <- sf::st_crs(res)
+    res <- tibble::as_tibble(res)
+    sf::st_as_sf(res)
   } else if (is.data.frame(res)) {
     tibble::as_tibble(res, .name_repair = "minimal")
   } else {
@@ -85,11 +87,8 @@ get_datastore_resource <- function(resource_id) {
   res[["records"]]
 }
 
-check_geometry_resource <- function(res, resource_id) {
-  if (("LATITUDE" %in% toupper(colnames(res)) &&
-    "LONGITUDE" %in% toupper(colnames(res))) |
-    "GEOMETRY" %in% toupper(colnames(res))) {
-    res <- tibble::as_tibble(res)
+check_geometry_resource <- function(res, format) {
+  if (tolower(format) == "geojson") {
     res <- covert_geometry_resource(res)
   } else {
     res
@@ -97,9 +96,8 @@ check_geometry_resource <- function(res, resource_id) {
 }
 
 covert_geometry_resource <- function(res) {
-  sf_geometry <- geojsonsf::geojson_sf(res[["geometry"]])
-  res[["geometry"]] <- sf_geometry[["geometry"]]
-  sf::st_as_sf(res, sf_column_name = "geometry", crs = 4326)
+  res[["geometry"]] <- sf::st_as_sfc(res[["geometry"]], GeoJSON = TRUE, crs = 4326)
+  sf::st_as_sf(tibble::as_tibble(res), sf_column_name = "geometry", crs = 4326)
 }
 
 tibble_list_elements <- function(x) {

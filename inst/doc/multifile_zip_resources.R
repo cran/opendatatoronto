@@ -1,11 +1,12 @@
-## ---- include = FALSE----------------------------------------------------
+## ---- include = FALSE---------------------------------------------------------
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
-  warning = FALSE
+  warning = FALSE,
+  message = FALSE
 )
 
-## ----setup---------------------------------------------------------------
+## ----setup--------------------------------------------------------------------
 library(opendatatoronto)
 library(dplyr)
 
@@ -16,6 +17,6 @@ summary_diseases <- search_packages("Annual Summary of Reportable Communicable D
 
 str(summary_diseases, max.level = 1)
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 summary_diseases[["RatesbyDisease2007_2017.csv"]]
 

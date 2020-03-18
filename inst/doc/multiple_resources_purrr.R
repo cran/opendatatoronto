@@ -1,17 +1,17 @@
-## ---- include = FALSE----------------------------------------------------
+## ---- include = FALSE---------------------------------------------------------
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
 
-## ----setup---------------------------------------------------------------
+## ----setup--------------------------------------------------------------------
 library(opendatatoronto)
 
 ttc_subway_delays_resources <- list_package_resources("https://open.toronto.ca/dataset/ttc-subway-delay-data/")
 
 ttc_subway_delays_resources
 
-## ---- eval = FALSE-------------------------------------------------------
+## ---- eval = FALSE------------------------------------------------------------
 #  library(dplyr)
 #  
 #  delays_jan_2019 <- ttc_subway_delays_resources %>%
@@ -22,10 +22,10 @@ ttc_subway_delays_resources
 #    filter(name == "ttc-subway-delay-february-2019") %>%
 #    get_resource()
 
-## ----include = FALSE-----------------------------------------------------
+## ----include = FALSE----------------------------------------------------------
 library(dplyr)
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 library(purrr)
 
 ttc_subway_delays_2019 <- ttc_subway_delays_resources %>%
@@ -34,9 +34,9 @@ ttc_subway_delays_2019 <- ttc_subway_delays_resources %>%
 
 ttc_subway_delays_2019
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 map(ttc_subway_delays_2019[["data"]], colnames)
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 bind_rows(ttc_subway_delays_2019[["data"]])
 
