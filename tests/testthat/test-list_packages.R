@@ -2,6 +2,7 @@ context("test-list_packages")
 
 test_that("list_packages returns the right output formats.", {
   skip_on_cran()
+  skip_if_offline()
   output <- list_packages(1)
   expect_is(output, "tbl_df")
   expect_equal(names(output), package_cols)
@@ -14,4 +15,11 @@ test_that("list_packages returns the right output formats.", {
   expect_is(output$formats, "character")
   expect_is(output$refresh_rate, "character")
   expect_is(output$last_refreshed, "Date")
+})
+
+test_that("list_packages errors if offline", {
+  with_mock(
+    "curl::has_internet" = function() FALSE,
+    expect_error(list_packages(1), "does not work offline")
+  )
 })

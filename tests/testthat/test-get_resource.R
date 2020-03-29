@@ -17,6 +17,7 @@ test_that("check_format throws an error when format is not one of CSV, XLS, XLSX
 
 test_that("get_resource returns the right output formats.", {
   skip_on_cran()
+  skip_if_offline()
   output <- get_resource("4d985c1d-9c7e-4f74-9864-73214f45eb4a")
   expect_is(output, "tbl_df")
   expect_is(output, "tbl")
@@ -75,4 +76,11 @@ test_that("nested_lapply_tibble makes data frame list elements into tibbles and 
   expect_is(z_tibble[["x"]][["a"]], "tbl_df")
   expect_is(z_tibble[["x"]][["c"]], "tbl_df")
   expect_is(z_tibble[["y"]], "tbl_df")
+})
+
+test_that("get_resource errors if offline", {
+  with_mock(
+    "curl::has_internet" = function() FALSE,
+    expect_error(get_resource("4d985c1d-9c7e-4f74-9864-73214f45eb4a"), "does not work offline")
+  )
 })

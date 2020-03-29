@@ -2,6 +2,7 @@ context("test-show_package")
 
 test_that("show_package has the correct return format.", {
   skip_on_cran()
+  skip_if_offline()
   output <- show_package("c01c6d71-de1f-493d-91ba-364ce64884ac")
   expect_is(output, "tbl_df")
   expect_equal(names(output), package_cols)
@@ -43,4 +44,11 @@ test_that("show_package has the correct return format.", {
   expect_is(output$refresh_rate, "character")
   expect_is(output$num_resources, "integer")
   expect_is(output$last_refreshed, "Date")
+})
+
+test_that("show_package errors if offline", {
+  with_mock(
+    "curl::has_internet" = function() FALSE,
+    expect_error(show_package("c01c6d71-de1f-493d-91ba-364ce64884ac"), "does not work offline")
+  )
 })
