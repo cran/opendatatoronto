@@ -1,3 +1,7 @@
+# opendatatoronto 0.1.4
+
+* Fixed a failing test
+
 # opendatatoronto 0.1.3
 
 * Moved vignettes to articles section
