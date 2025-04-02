@@ -1,6 +1,6 @@
 Package: opendatatoronto
 Title: Access the City of Toronto Open Data Portal
-Version: 0.1.5
+Version: 0.1.6
 Authors@R: 
     c(person(given = "Sharla",
              family = "Gelfand",
@@ -20,11 +20,11 @@ Suggests: covr, dplyr, ggiraph, ggplot2, knitr, purrr, tidyr,
         rmarkdown, testthat
 VignetteBuilder: knitr
 Encoding: UTF-8
-RoxygenNote: 7.1.1
+RoxygenNote: 7.3.1
 NeedsCompilation: no
-Packaged: 2022-04-11 20:24:48 UTC; sharla
+Packaged: 2025-04-02 15:36:32 UTC; sharla
 Author: Sharla Gelfand [aut, cre],
   City of Toronto [cph, fnd]
 Maintainer: Sharla Gelfand <sharla.gelfand@gmail.com>
 Repository: CRAN
-Date/Publication: 2022-04-13 11:30:05 UTC
+Date/Publication: 2025-04-02 16:00:09 UTC
